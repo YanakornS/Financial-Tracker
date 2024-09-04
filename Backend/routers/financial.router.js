@@ -9,7 +9,7 @@ router.post("/",financialController.create);
 router.get("/",financialController.findAll);
 
 //GET BY UserID
-router.get("/user/:userId", financialController.findAllByUserId);
+router.get("/:userId", financialController.findAllByUserId);
     
 // Update a Financial records
 router.put('/:id', financialController.update);
