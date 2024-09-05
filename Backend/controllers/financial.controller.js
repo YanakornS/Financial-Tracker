@@ -1,9 +1,9 @@
 const Financial = require("../models/financial.model");
 
-
 // Create a new Financial record
 exports.create = (req, res) => {
-  const { userId, date, description, amount, category, paymentMethod } = req.body;
+  const { userId, date, description, amount, category, paymentMethod } =
+    req.body;
 
   const newRecord = {
     userId,
@@ -20,7 +20,9 @@ exports.create = (req, res) => {
     })
     .catch((error) => {
       res.status(500).send({
-        message: error.message || "Something error occurred while creating the financial record.",
+        message:
+          error.message ||
+          "Something error occurred while creating the financial record.",
       });
     });
 };
@@ -33,11 +35,33 @@ exports.findAll = (req, res) => {
     })
     .catch((error) => {
       res.status(500).send({
-        message: error.message || "Something error occurred while retrieving the financial records.",
+        message:
+          error.message ||
+          "Something error occurred while retrieving the financial records.",
       });
     });
 };
 
+// Retrieve Financial records by  Id
+exports.findAllById = (req, res) => {
+  const { id } = req.params;
+
+  Financial.findAll({ where: { id } })
+    .then((records) => {
+      if (records.length > 0) {
+        res.send(records);
+      } else {
+        res.status(404).send({ message: "No records found for this user." });
+      }
+    })
+    .catch((error) => {
+      res.status(500).send({
+        message:
+          error.message ||
+          "Something error occurred while retrieving the financial records by userId.",
+      });
+    });
+};
 // Retrieve Financial records by User Id
 exports.findAllByUserId = (req, res) => {
   const { userId } = req.params;
@@ -52,11 +76,12 @@ exports.findAllByUserId = (req, res) => {
     })
     .catch((error) => {
       res.status(500).send({
-        message: error.message || "Something error occurred while retrieving the financial records by userId.",
+        message:
+          error.message ||
+          "Something error occurred while retrieving the financial records by userId.",
       });
     });
 };
-
 // Update Financial records
 exports.update = (req, res) => {
   const id = req.params.id;
@@ -72,13 +97,14 @@ exports.update = (req, res) => {
     })
     .catch((error) => {
       res.status(500).send({
-        message: error.message || "Something error occurred while updating the financial record.",
+        message:
+          error.message ||
+          "Something error occurred while updating the financial record.",
       });
     });
 };
 
-
-//Delete Financial records 
+//Delete Financial records
 exports.delete = async (req, res) => {
   const id = req.params.id;
 

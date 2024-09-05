@@ -1,135 +1,160 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import Swal from "sweetalert2";
+import { useParams, useNavigate } from "react-router-dom";
+import FinancialService from "../services/Financia.service";
 
-const EditFinancial = () => {
-  const { userId } = useParams(); // ดึง id จาก URL
+function EditFinancial() {
   const navigate = useNavigate();
-  const [financialData, setFinancialData] = useState({
-    userId: '',
-    description: '',
-    date: '',
-    amount: '',
-    category: '',
-    paymentMethod: ''
+  const { id } = useParams();
+
+  const [financial, setFinancials] = useState({
+    userId: "",
+    description: "",
+    date: "",
+    amount: "",
+    category: "",
+    paymentMethod: "",
   });
 
-  // ฟังก์ชันในการดึงข้อมูลจาก API
-useEffect(() => {
-  if (userId) {
-    const fetchFinancialData = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/api/vi/financial/${userId}`);
-        setFinancialData(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.error('Error fetching financial data:', error);
-      }
-    };
-    fetchFinancialData();
-  }
-}, [userId]);
+  // Fetch financial record by ID
+  useEffect(() => {
+    if (id) {
+      FinancialService.getFinanciaById(id).then((response) => {
+        if (response.status === 200) {
+          const data = response.data;
+          // Ensure all fields have a value to avoid uncontrolled input issues
+          setFinancials({
+            userId: data.userId || "",
+            description: data.description || "",
+            date: data.date || "",
+            amount: data.amount || "",
+            category: data.category || "",
+            paymentMethod: data.paymentMethod || "",
+          });
+        }
+      });
+    }
+  }, [id]);
 
-  // ฟังก์ชันในการจัดการการเปลี่ยนแปลงของฟอร์ม
   const handleChange = (e) => {
-    setFinancialData({
-      ...financialData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value } = e.target;
+    setFinancials({ ...financial, [name]: value });
   };
 
-  // ฟังก์ชันในการจัดการการส่งฟอร์ม
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // ป้องกันการ refresh หน้า
     try {
-      await axios.put(`http://localhost:5000/api/v1/financial/${userId}`, financialData);
-      alert('Financial record updated successfully');
-      navigate('/financial-list'); // เปลี่ยนเส้นทางไปยังหน้ารายการหลังจากอัปเดต
+      const response = await FinancialService.editFinancia(id, financial);
+      if (response.status === 200) {
+        Swal.fire({
+          icon: "success",
+          title: "Financial record updated",
+          text: "Updated successfully",
+          timer: 1500,
+        });
+        navigate("/");
+      }
     } catch (error) {
-      console.error('Error updating financial record:', error);
+      Swal.fire({
+        icon: "error",
+        title: "Failed to update financial record",
+        text: error?.response?.data?.message || error.message,
+        timer: 1500,
+      });
     }
   };
 
   return (
-    <div className="flex items-center justify-center h-full">
-      <div className="w-96 bg-base-100 shadow-xl m-2 p-4 rounded-lg">
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block">User ID:</label>
-            <input
-              type="text"
-              name="userId"
-              value={financialData[0]}
-              onChange={handleChange}
-              className="input input-bordered w-full"
-              required
-            />
-            {console.log(financialData)}
-          </div>
-          <div>
-            <label className="block">Description:</label>
-            <input
-              type="text"
-              name="description"
-              value={financialData[0]}
-              onChange={handleChange}
-              className="input input-bordered w-full"
-              required
-            />
-          </div>
-          <div>
-            <label className="block">Date:</label>
-            <input
-              type="date"
-              name="date"
-              value={financialData.date}
-              onChange={handleChange}
-              className="input input-bordered w-full"
-              required
-            />
-          </div>
-          <div>
-            <label className="block">Amount:</label>
-            <input
-              type="number"
-              name="amount"
-              value={financialData.amount}
-              onChange={handleChange}
-              className="input input-bordered w-full"
-              required
-            />
-          </div>
-          <div>
-            <label className="block">Category:</label>
-            <input
-              type="text"
-              name="category"
-              value={financialData.category}
-              onChange={handleChange}
-              className="input input-bordered w-full"
-              required
-            />
-          </div>
-          <div>
-            <label className="block">Payment Method:</label>
-            <input
-              type="text"
-              name="paymentMethod"
-              value={financialData.paymentMethod}
-              onChange={handleChange}
-              className="input input-bordered w-full"
-              required
-            />
-          </div>
-          <div className="flex justify-end">
-            <button type="submit" className="btn btn-primary">
-              Update Financial Record
-            </button>
-          </div>
-        </form>
+    <div className="max-w-md mx-auto mt-6 mb-8 p-8 bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 rounded-lg shadow-lg">
+      <div className="font-bold text-4xl text-white text-center mb-8">
+        <span className="text-[#c493ff]">Edit</span> Financial Record
       </div>
+      <form onSubmit={handleSubmit}>
+        <label className="flex flex-col mb-4">
+          <span className="text-white font-semibold mb-1">UserId</span>
+          <input
+            type="text"
+            className="p-2 bg-purple-100 border border-[#c493ff] rounded-md focus:outline-none focus:ring-2 focus:ring-[#c493ff]"
+            placeholder="UserId"
+            name="userId"
+            onChange={handleChange}
+            value={financial.userId}
+          />
+        </label>
+        <label className="flex flex-col mb-4">
+          <span className="text-white font-semibold mb-1">Description</span>
+          <input
+            type="text"
+            className="p-2 bg-purple-100 border border-[#c493ff] rounded-md focus:outline-none focus:ring-2 focus:ring-[#c493ff]"
+            placeholder="Description"
+            name="description"
+            onChange={handleChange}
+            value={financial.description}
+          />
+        </label>
+        <label className="flex flex-col mb-4">
+          <span className="text-white font-semibold mb-1">Date</span>
+          <input
+            type="date"
+            className="p-2 bg-purple-100 border border-[#c493ff] rounded-md focus:outline-none focus:ring-2 focus:ring-[#c493ff]"
+            name="date"
+            onChange={handleChange}
+            value={financial.date}
+          />
+        </label>
+        <label className="flex flex-col mb-4">
+          <span className="text-white font-semibold mb-1">Amount</span>
+          <input
+            type="number"
+            className="p-2 bg-purple-100 border border-[#c493ff] rounded-md focus:outline-none focus:ring-2 focus:ring-[#c493ff]"
+            placeholder="Amount"
+            name="amount"
+            onChange={handleChange}
+            value={financial.amount}
+          />
+        </label>
+        <label className="block mb-4">
+          <span className="text-white font-semibold mb-1">Category</span>
+          <select
+            id="category"
+            name="category"
+            onChange={handleChange}
+            value={financial.category}
+            className="w-full p-2 bg-purple-100 border border-[#c493ff] rounded-md focus:outline-none focus:ring-2 focus:ring-[#c493ff]"
+          >
+            <option value="" disabled>
+              Choose a Category
+            </option>
+            <option value="Food">Food</option>
+            <option value="Drink">Drink</option>
+            <option value="Supplies">Supplies</option>
+          </select>
+        </label>
+        <label className="block mb-4">
+          <span className="text-white font-semibold mb-1">Payment Method</span>
+          <select
+            id="paymentMethod"
+            name="paymentMethod"
+            onChange={handleChange}
+            value={financial.paymentMethod}
+            className="w-full p-2 bg-purple-100 border border-[#c493ff] rounded-md focus:outline-none focus:ring-2 focus:ring-[#c493ff]"
+          >
+            <option value="" disabled>
+              Choose a Method
+            </option>
+            <option value="Cash">Cash</option>
+            <option value="CreditCard">Credit Card</option>
+            <option value="Prompay">Prompay</option>
+          </select>
+        </label>
+        <button
+          type="submit"
+          className="w-full py-3 px-5 bg-[#c493ff] text-white font-semibold rounded-lg shadow-md hover:bg-[#b279e8] focus:outline-none focus:ring-2 focus:ring-[#c493ff] focus:ring-offset-2 mt-5"
+        >
+          Edit Financial
+        </button>
+      </form>
     </div>
   );
-};
-
+}
 export default EditFinancial;

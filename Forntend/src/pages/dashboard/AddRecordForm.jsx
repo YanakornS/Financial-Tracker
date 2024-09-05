@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
-import axios from "axios";
+import { useFinancialRecords } from "../../Contexts/financial.context"; // ใช้ path ที่ถูกต้อง
+import { useUser } from "@clerk/clerk-react";
 
-// ข้อมูลตัวอย่างสำหรับ dropdown
 const categories = ["Food", "Transport", "Utilities", "Entertainment"];
 const paymentMethods = ["Cash", "Credit Card", "Debit Card", "Bank Transfer"];
 
-const AddFinancial = () => {
-  const [userId, setUserId] = useState("");
+const AddRecordForm = () => {
+  const { addRecord } = useFinancialRecords(); // ใช้ context
+  const { user } = useUser(); // ดึงข้อมูลผู้ใช้ที่ล็อกอินอยู่
+
+  // กำหนดค่า state สำหรับฟอร์ม
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
   const [amount, setAmount] = useState("");
@@ -17,36 +20,32 @@ const AddFinancial = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/api/vi/financial/",
-        {
-          userId,
-          description,
-          date,
-          amount,
-          category,
-          paymentMethod,
-        }
-      );
+    if (!user) {
+      Swal.fire("Error!", "User not logged in.", "error");
+      return;
+    }
 
-      console.log("Response status:", response.status); // ตรวจสอบสถานะการตอบกลับ
-      if (response.status === 201) {
-        Swal.fire(
-          "Success!",
-          "Financial record added successfully!",
-          "success"
-        );
-        // Reset the form fields
-        setUserId("");
-        setDescription("");
-        setDate("");
-        setAmount("");
-        setCategory("");
-        setPaymentMethod("");
-      }
+    const record = {
+      userId: user.id, // ใช้ userId จาก context
+      description,
+      date,
+      amount,
+      category,
+      paymentMethod,
+    };
+
+    try {
+      await addRecord(record); // ใช้ฟังก์ชัน addRecord จาก context
+      Swal.fire("Success!", "Financial record added successfully!", "success");
+
+      // Reset the form fields
+      setDescription("");
+      setDate("");
+      setAmount("");
+      setCategory("");
+      setPaymentMethod("");
     } catch (error) {
-      console.error("Error adding financial record:", error); // ตรวจสอบข้อผิดพลาด
+      console.error("Error adding financial record:", error);
       Swal.fire(
         "Error!",
         "There was an error adding the financial record.",
@@ -59,16 +58,6 @@ const AddFinancial = () => {
     <div className="flex items-center justify-center h-full">
       <div className="w-96 bg-base-100 shadow-xl m-2 p-4 rounded-lg border-2 border-[#c493ff]">
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-[#c493ff]">User ID:</label>
-            <input
-              type="text"
-              value={userId}
-              onChange={(e) => setUserId(e.target.value)}
-              className="input input-bordered w-full border-[#c493ff] focus:ring-2 focus:ring-[#c493ff]"
-              required
-            />
-          </div>
           <div>
             <label className="block text-[#c493ff]">Description:</label>
             <input
@@ -149,4 +138,4 @@ const AddFinancial = () => {
   );
 };
 
-export default AddFinancial;
+export default AddRecordForm;
