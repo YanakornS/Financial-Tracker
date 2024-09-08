@@ -21,7 +21,7 @@ function Home() {
         }
       } catch (error) {
         Swal.file({
-          title: "Get All Restaurant",
+          title: "Get All Financial",
           text: error?.response?.data?.message || error.message,
           icon: "error",
         });

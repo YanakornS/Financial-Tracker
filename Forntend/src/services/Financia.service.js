@@ -8,7 +8,7 @@ const getFinanciaAll = async () => {
 
 //get Financial By ID
 const getFinanciaById = async (id) => {
-  return await api.get(Financial_API + `${id}`);
+  return await api.get(Financial_API + `/${id}`);
 };
 
 //get Financial By User ID
@@ -18,12 +18,12 @@ const getFinanciaByUserId = async (userId) => {
 
 //update a Financial data
 const editFinancia = async (id, financial) => {
-  return await api.put(Financial_API + `${id}`, financial);
+  return await api.put(Financial_API + `/${id}`, financial);
 };
 
 //Delete a Financial data
 const deleteFinancia = async (id) => {
-  return await api.delete(Financial_API + `${id}`);
+  return await api.delete(Financial_API +`/${id}`);
 };
 
 //Add a Financial Data

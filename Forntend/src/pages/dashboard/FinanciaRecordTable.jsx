@@ -1,24 +1,38 @@
 import React from "react";
 import { useFinancialRecords } from "../../Contexts/financial.context"; // Adjust the path as needed
+import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const FinanciaRecordTable = () => {
-  const { records, deleteRecord } = useFinancialRecords(); // Use context to get records and deleteRecord function
+  const { records, deleteRecord } = useFinancialRecords(); // ใช้ context เพื่อดึง records และ deleteRecord function
 
   const handleDelete = async (id) => {
-    try {
-      await deleteRecord(id);
-      Swal.fire(
-        "Deleted!",
-        "Financial record deleted successfully!",
-        "success"
-      );
-    } catch (error) {
-      console.error("Error deleting financial record:", error);
-      Swal.fire(
-        "Error!",
-        "There was an error deleting the financial record.",
-        "error"
-      );
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await deleteRecord(id);
+        Swal.fire(
+          "Deleted!",
+          "Financial record deleted successfully!",
+          "success"
+        );
+      } catch (error) {
+        console.error("Error deleting financial record:", error);
+        Swal.fire(
+          "Error!",
+          "There was an error deleting the financial record.",
+          "error"
+        );
+      }
     }
   };
 
@@ -73,9 +87,11 @@ const FinanciaRecordTable = () => {
               <td>{record.paymentMethod}</td>
               <th>
                 <div className="flex space-x-2">
-                  <button className="btn bg-[#c493ff] text-white btn-xs border-none hover:bg-[#a970e8]">
-                    Edit
-                  </button>
+                  <Link to={`/EditRecordFinancia/${record.id}`}>
+                    <button className="btn bg-[#c493ff] text-white btn-xs border-none hover:bg-[#a970e8]">
+                      Edit
+                    </button>
+                  </Link>
                   <button
                     className="btn bg-[#c493ff] text-white btn-xs border-none hover:bg-[#a970e8]"
                     onClick={() => handleDelete(record.id)}
