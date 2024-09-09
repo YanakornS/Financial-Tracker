@@ -22,9 +22,9 @@ function Navbar() {
 
   return (
     <div
-      className={`navbar bg-base-80 mt-3 mb-3 mx-auto h-20 w-5/5 ${
-        theme === "synthwave" ? "border-[#c493ff]" : ""
-      }`}
+      className={`navbar bg-base-80 mt-3 mb-3 mx-auto h-20 w-5/5 shadow-lg border-2 ${
+        theme === "synthwave" ? "border"  : "border-gray-300"
+      } rounded-lg`}
     >
       <div className="navbar-start">
         <div className="dropdown">
@@ -47,7 +47,7 @@ function Navbar() {
           <ul
             tabIndex={0}
             className={`menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow ${
-              theme === "synthwave" ? "border-[#c493ff]" : ""
+              theme === "synthwave" ? "border-[#c493ff]" : "border-gray-300"
             }`}
           >
             <li>

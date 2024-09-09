@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Swal from "sweetalert2";
 import { useFinancialRecords } from "../../Contexts/financial.context"; // ใช้ path ที่ถูกต้อง
 import { useUser } from "@clerk/clerk-react";
+import addimage from "./../../assets/add.png"; // Import รูปภาพเข้ามา
 
 
 
@@ -118,7 +119,7 @@ const AddRecordForm = () => {
               required
             >
               <option value="" disabled>
-                Select a payment 
+                Select a payment
               </option>
               {paymentMethods.map((method) => (
                 <option key={method} value={method}>
@@ -130,8 +131,13 @@ const AddRecordForm = () => {
           <div className="flex justify-end">
             <button
               type="submit"
-              className="btn bg-[#c493ff] text-white border-none hover:bg-[#a970e8]"
+              className="btn bg-[#c493ff] text-white border-none hover:bg-[#a970e8] flex items-center gap-2"
             >
+              <img
+                src={addimage} // แก้ไข path นี้ให้ตรงกับที่อยู่ของไฟล์ PNG ที่คุณต้องการใช้
+                alt="Add Icon"
+                className="w-8 h-8"
+              />
               Add Financial Record
             </button>
           </div>
