@@ -2,9 +2,11 @@ import React from "react";
 import { useFinancialRecords } from "../../Contexts/financial.context"; // Adjust the path as needed
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import { useUser } from "@clerk/clerk-react";
 
 const FinanciaRecordTable = () => {
   const { records, deleteRecord } = useFinancialRecords(); // ใช้ context เพื่อดึง records และ deleteRecord function
+  const { user } = useUser(); // ดึงข้อมูลผู้ใช้จาก context
 
   const handleDelete = async (id) => {
     const result = await Swal.fire({
@@ -20,18 +22,10 @@ const FinanciaRecordTable = () => {
     if (result.isConfirmed) {
       try {
         await deleteRecord(id);
-        Swal.fire(
-          "Deleted!",
-          "Financial record deleted successfully!",
-          "success"
-        );
+        Swal.fire("Deleted!", "Financial record deleted successfully!", "success");
       } catch (error) {
         console.error("Error deleting financial record:", error);
-        Swal.fire(
-          "Error!",
-          "There was an error deleting the financial record.",
-          "error"
-        );
+        Swal.fire("Error!", "There was an error deleting the financial record.", "error");
       }
     }
   };
@@ -44,7 +38,7 @@ const FinanciaRecordTable = () => {
           <tr>
             <th>
               <label>
-                <input type="checkbox" className="checkbox" />
+              
               </label>
             </th>
             <th>User ID</th>
@@ -60,16 +54,14 @@ const FinanciaRecordTable = () => {
           {records.map((record) => (
             <tr key={record.id} className="hover:bg-[#f3e8ff]">
               <th>
-                <label>
-                  <input type="checkbox" className="checkbox" />
-                </label>
               </th>
               <td>
                 <div className="flex items-center gap-3">
                   <div className="avatar">
                     <div className="mask mask-squircle h-12 w-12">
+                      {/* ใช้รูปภาพจากผู้ใช้ที่ล็อกอินเข้ามา */}
                       <img
-                        src="https://img.daisyui.com/images/profile/demo/2@94.webp"
+                        src={user?.imageUrl} 
                         alt="User Avatar"
                       />
                     </div>

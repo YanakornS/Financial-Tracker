@@ -3,6 +3,9 @@ import Swal from "sweetalert2";
 import { useFinancialRecords } from "../../Contexts/financial.context"; // ใช้ path ที่ถูกต้อง
 import { useUser } from "@clerk/clerk-react";
 
+
+
+
 const categories = ["Food", "Transport", "Utilities", "Entertainment"];
 const paymentMethods = ["Cash", "Credit Card", "Debit Card", "Bank Transfer"];
 
@@ -107,7 +110,7 @@ const AddRecordForm = () => {
             </select>
           </div>
           <div>
-            <label className="block text-[#c493ff]">Payment Method:</label>
+            <label className="block text-[#c493ff]">Payment :</label>
             <select
               value={paymentMethod}
               onChange={(e) => setPaymentMethod(e.target.value)}
@@ -115,7 +118,7 @@ const AddRecordForm = () => {
               required
             >
               <option value="" disabled>
-                Select a payment method
+                Select a payment 
               </option>
               {paymentMethods.map((method) => (
                 <option key={method} value={method}>

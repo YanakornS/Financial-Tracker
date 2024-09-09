@@ -11,30 +11,26 @@ import {
 } from "@clerk/clerk-react";
 
 function Home() {
-  const [financials, setFinancials] = useState([]);
-  useEffect(() => {
-    const getFinancial = async () => {
-      try {
-        const response = await FinancialService.getAllFinancial();
-        if (response.status === 200) {
-          setFinancials(response.data);
-        }
-      } catch (error) {
-        Swal.file({
-          title: "Get All Financial",
-          text: error?.response?.data?.message || error.message,
-          icon: "error",
-        });
+ useEffect(() => {
+  const getFinancial = async () => {
+    try {
+      const response = await FinancialService.getAllFinancial();
+      if (response.status === 200) {
+        setFinancials(response.data);
       }
-    };
-    getFinancial();
-  }, []);
+    } catch (error) {
+     
+    }
+  };
+  getFinancial();
+}, []);
+
   //<Financial financials={financials}/>
   return (
     <>
       <div className="container flex flex-row flex-wrap mx-auto items-center justify-center">
         <SignedOut>
-          <h1 className="text-6xl font-bold mb-5 mt-5">
+          <h1 className="text-5xl font-bold mb-5 mt-5 text-[#c493ff] ">
             Welcome to your own Personal
           </h1>
         </SignedOut>
