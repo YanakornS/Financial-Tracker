@@ -39,7 +39,7 @@ const Dashboard = () => {
         </div>
       </div>
       <AddRecordForm />
-      <div className="text-lg text-[#533391] mt-4 p-4 border-2 border-[#c493ff] rounded-lg shadow-lg bg-white inline-block max-w-fit">
+      <div className="text-lg mt-4 p-3 border-2 border-[#c493ff] rounded-lg shadow-lg inline-block max-w-fit">
         <div className="flex items-center">
           {/* เพิ่มรูปภาพ PNG */}
           <img
