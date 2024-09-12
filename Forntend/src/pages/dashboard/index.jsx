@@ -33,7 +33,7 @@ const Dashboard = () => {
           </div>
         )}
         <div className="text-center text-3xl md:text-4xl md:leading-snug font-bold my-2 text-[#c493ff]">
-          Welcome{" "}
+          Welcome To{" "}
           <span className="text-[#533391]">{user?.firstName || "Guest"}</span>!
           Here are your Finance
         </div>
