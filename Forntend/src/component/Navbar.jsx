@@ -9,7 +9,9 @@ import {
 } from "@clerk/clerk-react";
 
 function Navbar() {
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
+  const [theme, setTheme] = useState(
+    localStorage.getItem("theme") || "synthwave"
+  );
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
@@ -23,7 +25,7 @@ function Navbar() {
   return (
     <div
       className={`navbar bg-base-80 mt-3 mb-3 mx-auto h-20 w-5/5 shadow-lg border-2 ${
-        theme === "synthwave" ? "border"  : "border-gray-300"
+        theme === "synthwave" ? "border" : "border-gray-300"
       } rounded-lg`}
     >
       <div className="navbar-start">
