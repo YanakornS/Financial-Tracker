@@ -7,6 +7,7 @@ const cors = require("cors");
 const ORIGIN = process.env.ORIGIN;
 
 // ตั้งค่า CORS
+console.log(ORIGIN);
 const corsOptions = {
   origin: ORIGIN, // ใช้ค่าจาก .env หรือค่าเริ่มต้น
 };
