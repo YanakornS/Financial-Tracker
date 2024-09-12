@@ -65,7 +65,7 @@ function EditFinancial() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-6 mb-8 p-8 bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 rounded-lg shadow-lg">
+    <div className="max-w-md mx-auto mt-6 mb-8 p-8 bg-gradient-to-r from-purple-500  via-purple-600 to-purple-700 rounded-lg shadow-lg">
       <div className="font-bold text-4xl text-white text-center mb-8">
         <span className="text-[#c493ff]">Edit</span> Financial Record
       </div>

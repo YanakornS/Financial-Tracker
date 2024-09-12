@@ -3,11 +3,8 @@ import { useFinancialRecords } from "../../Contexts/financial.context"; // Adjus
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useUser } from "@clerk/clerk-react";
-import NextPage from "./../../assets/Nextpage.png"; 
-import Previous from "./../../assets/Previous.png"; 
-
-
-
+import NextPage from "./../../assets/Nextpage.png";
+import Previous from "./../../assets/Previous.png";
 
 const PAGE_SIZE = 6; // กำหนดจำนวนข้อมูลต่อหน้า
 

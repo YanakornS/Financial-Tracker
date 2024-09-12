@@ -1,4 +1,4 @@
-const { DataType, DataTypes } = require ("sequelize");
+const { DataType, DataTypes } = require("sequelize");
 const sequelize = require("./db");
 
 //define DB Schema
@@ -34,7 +34,6 @@ const Financial = sequelize.define("financial", {
   },
 });
 
-
 Financial.sync({ force: false })
   .then(() => {
     console.log("Table created or already exists");
@@ -42,6 +41,5 @@ Financial.sync({ force: false })
   .catch((error) => {
     console.log("Error creating table:", error);
   });
-
 
 module.exports = Financial;

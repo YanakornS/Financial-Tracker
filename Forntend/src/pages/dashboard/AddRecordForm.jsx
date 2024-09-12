@@ -4,9 +4,6 @@ import { useFinancialRecords } from "../../Contexts/financial.context"; // ใ�
 import { useUser } from "@clerk/clerk-react";
 import addimage from "./../../assets/add.png"; // Import รูปภาพเข้ามา
 
-
-
-
 const categories = ["Food", "Transport", "Utilities", "Entertainment"];
 const paymentMethods = ["Cash", "Credit Card", "Debit Card", "Bank Transfer"];
 
@@ -131,7 +128,7 @@ const AddRecordForm = () => {
           <div className="flex justify-end">
             <button
               type="submit"
-              className="btn bg-[#c493ff] text-white border-none hover:bg-[#a970e8] flex items-center gap-2"
+              className="btn bg-[#c493ff] text-white border-none hover:bg-[#a970e8] flex items-center gap-2 shadow-lg"
             >
               <img
                 src={addimage} // แก้ไข path นี้ให้ตรงกับที่อยู่ของไฟล์ PNG ที่คุณต้องการใช้

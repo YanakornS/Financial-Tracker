@@ -20,29 +20,28 @@ const EditRecordForm = () => {
   const [category, setCategory] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("");
 
-useEffect(() => {
-  const fetchRecord = async () => {
-    const record = await getRecordById(id);
-    console.log(record); // ตรวจสอบโครงสร้างของข้อมูล
-    if (record) {
-      setDescription(record.description || record[0]?.description);
-      // แปลงวันที่ให้อยู่ในรูปแบบ YYYY-MM-DD
-      const formattedDate = new Date(record.date || record[0]?.date)
-        .toISOString()
-        .split("T")[0];
-      setDate(formattedDate);
-      setAmount(record.amount || record[0]?.amount);
-      setCategory(record.category || record[0]?.category);
-      setPaymentMethod(record.paymentMethod || record[0]?.paymentMethod);
-    } else {
-      Swal.fire("Error!", "Record not found.", "error");
-      navigate("/");
-    }
-  };
+  useEffect(() => {
+    const fetchRecord = async () => {
+      const record = await getRecordById(id);
+      console.log(record); // ตรวจสอบโครงสร้างของข้อมูล
+      if (record) {
+        setDescription(record.description || record[0]?.description);
+        // แปลงวันที่ให้อยู่ในรูปแบบ YYYY-MM-DD
+        const formattedDate = new Date(record.date || record[0]?.date)
+          .toISOString()
+          .split("T")[0];
+        setDate(formattedDate);
+        setAmount(record.amount || record[0]?.amount);
+        setCategory(record.category || record[0]?.category);
+        setPaymentMethod(record.paymentMethod || record[0]?.paymentMethod);
+      } else {
+        Swal.fire("Error!", "Record not found.", "error");
+        navigate("/");
+      }
+    };
 
-  fetchRecord();
-}, [id, getRecordById, navigate]);
-
+    fetchRecord();
+  }, [id, getRecordById, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -63,7 +62,11 @@ useEffect(() => {
 
     try {
       await updateRecord(id, updatedRecord); // ใช้ฟังก์ชัน updateRecord จาก context
-      Swal.fire("Success!", "Financial record updated successfully!", "success");
+      Swal.fire(
+        "Success!",
+        "Financial record updated successfully!",
+        "success"
+      );
       navigate("/"); // เปลี่ยนเส้นทางกลับไปยังหน้ารายการหลังจากอัพเดตสำเร็จ
     } catch (error) {
       console.error("Error updating financial record:", error);
