@@ -35,7 +35,7 @@ const Dashboard = () => {
         <div className="text-center text-3xl md:text-4xl md:leading-snug font-bold my-2 text-[#c493ff]">
           Welcome{" "}
           <span className="text-[#533391]">{user?.firstName || "Guest"}</span>!
-          Here are your Finance:
+          Here are your Finance
         </div>
       </div>
       <AddRecordForm />
